@@ -73,8 +73,9 @@ public class PedidoDAO {
 
         try (Connection conn = new ConectaDB_Postgres().getConexao()) {
 
-            String sql = " INSERT INTO motoboy(nome, email, endereco, placa) "
-                    + " VALUES(?, ?, ?, ?);";
+            String sql = " select motoboy.nome as nomem, cliente.nome as nomec, produto.nome as nomep from motoboy, cliente, produto, pedido, pedido_produto \n"
+                    + "	where motoboy.id = pedido.id_motoboy and cliente.id = pedido.id_cliente and produto.id = pedido.id_produto\n"
+                    + "	and pedido.id = pedido_produto.id_pedido and pedido_produto.id_produto = produto.id and pedido.id = ?";
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, motoboy.getNome());
             pre.setString(2, motoboy.getEmail());
